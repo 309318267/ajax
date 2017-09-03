@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>获取JSON</title>
+    <script type="text/javascript" src="jquery-3.2.1.js"></script>
+</head>
+<body>
+    <div class="myDiv" style="color:aliceblue"></div>
+    <button class="btn">获取数据</button>
+    <script type="text/javascript">
+    $(function(){
+        $(".btn").click(function(){
+            $(".myDiv").empty();
+            $.ajax({
+                url:"data.txt",
+                datatype:"json",
+                type:"GET",
+                 success:function(data){ 
+                    $.each($.parseJSON(data),function(n,item){  
+                        $(".myDiv").append("<p>key:"+item.optionKey+"</br>value:"+item.optionValue+"</p>");
+                    })
+                }
+            })
+        })
+    })
+    </script>
+</body>
+</html>
