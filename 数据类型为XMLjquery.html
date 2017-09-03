@@ -5,43 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <script type="text/javascript" src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
 </head>
 <body>
     <h2>My Book Collection:</h2>
     <div id="myDiv"></div>
-    <button type="button" onclick="loadXMLDoc()">获得我的图书收藏列表</button>
+    <button id="cl" type="button">获得我的图书收藏列表</button>
          
     <script type="text/javascript">
-        function loadXMLDoc()
+    $(function(){
+    $("#cl").click(function(){
+      $.ajax({
+        url: "books.xml",
+        dataType: 'xml',
+        type: 'GET',
+        error: function(xml)
         {
-        var xmlhttp;
-        var txt,x,i;
-        if (window.XMLHttpRequest)
-          {// code for IE7+, Firefox, Chrome, Opera, Safari
-          xmlhttp=new XMLHttpRequest();
-          }
-        else
-          {// code for IE6, IE5
-          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-          }
-        xmlhttp.onreadystatechange=function()
-          {
-          if (xmlhttp.readyState==4 && xmlhttp.status==200)
-            {
-            xmlDoc=xmlhttp.responseXML;
-            txt="";
-            x=xmlDoc.getElementsByTagName("title");
-            for (i=0;i<x.length;i++)
-              {
-              txt=txt + x[i].childNodes[0].nodeValue + "<br />";
-              }
-            document.getElementById("myDiv").innerHTML=txt;
-            }
-          }
-        xmlhttp.open("GET","books.xml",true);
-        xmlhttp.send();
+            alert("加载XML 文件出错！");
+        },
+        success: function(xml)
+        {
+            $(xml).find("book").each(function(i)
+            {   var title = $(this).children("title").text()
+                var author = $(this).children("author").text();
+                var year = $(this).children("year").text();
+                var price = $(this).children("price").text();
+                $("#myDiv").append("<p>书名:"+title+"</br>作者:"+author+"</br>年份:"+year+"</br>价格:"+price+"</P>");
+                            
+            });
         }
+    });
+})
+})
     </script>
-        
+
+      
 </body>
 </html>
